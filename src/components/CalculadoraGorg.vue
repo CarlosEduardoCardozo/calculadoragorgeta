@@ -4,42 +4,32 @@ export default {
   data() {
     return {
       valor: 0,
+      taxa: 0,
+      qtdPessoas: 1
+    }
+  },
 
+  computed: {
+    // a computed getter
+    total() {
+      // `this` points to the component instance
+      return this.total = ((parseFloat(this.valor) * parseFloat(this.taxa)) + parseFloat(this.valor)).toFixed(2)
+    },
+    totalPorPessoa() {
+      // `this` points to the component instance
+      return this.totalPorPessoa = (((parseFloat(this.valor) * parseFloat(this.taxa)) + parseFloat(this.valor)) / parseInt(this.qtdPessoas)).toFixed(2)
     }
   }
 }
-function ValorFinal() {
-  let totalconta = document.getElementById("totalconta").value;
-  let taxa = document.getElementById("taxa").value;
-  let qntsP = document.getElementById("qntsP").value;
-
-  if (totalconta === "" || taxa == 0 || isNaN(totalconta) || isNaN(qntsP)) {
-    alert("Por favor, coloque um valor válido!");
-    return;
-  }
-
-
-  var totalTaxaServico = (totalconta * taxa) / qntsP;
-  var total = totalTaxaServico + (totalconta / qntsP);
-
-  total = Math.round(total * 100) / 100;
-  total = total.toFixed(2);
-
-  return document.getElementById("valor-por-cabeca").innerHTML = total;
-}
-
-
 </script>
-
 <template>
   <main>
-    {{ total }}
     <div class="painel">
       <h3>Calculadora de Gorjetas</h3>
       <label for="" class="infos">Qual o valor da conta?</label>
       <input type="text" v-model="valor" id="totalconta" />
       <label for="" class="infos">Como foi o serviço?</label>
-      <select data-v-7b896a00="" id="taxa">
+      <select data-v-7b896a00="" id="taxa" v-model="taxa">
         <option value="0.30" data-v-7b896a00="">30% (Excepcional)</option>
         <option value="0.25" data-v-7b896a00="">25% (Mais do que bom)</option>
         <option value="0.20" data-v-7b896a00="">20% (Bom)</option>
@@ -48,8 +38,8 @@ function ValorFinal() {
         <option value="0.05" data-v-7b896a00="">5% (Péssimo)</option>
       </select>
       <label for="" class="infos">Quantas pessoas estão pagando a conta?</label>
-      <input type="number" name="" id="qntsP" />
-      <span>Sua Conta ficou R$: por pessoa</span>
+      <input type="number" name="" id="qntsP" v-model="qtdPessoas"/>
+      <span>Sua Conta ficou R$: {{ total }} por pessoa {{ totalPorPessoa }}</span>
     </div>
   </main>
 </template>
